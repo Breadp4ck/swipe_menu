@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjwfm6ea2kvvn"]
+
+[ext_resource type="Script" path="res://addons/swipe_menu/swipe_menu.gd" id="1_42oki"]
+[ext_resource type="PackedScene" uid="uid://b8n384vyvnf40" path="res://addons/swipe_menu/example_card.tscn" id="2_7u68f"]
+
+[node name="SwipeMenu" type="ScrollContainer"]
+clip_contents = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+script = ExtResource("1_42oki")
+card_scenes = Array[PackedScene]([ExtResource("2_7u68f"), ExtResource("2_7u68f"), ExtResource("2_7u68f"), ExtResource("2_7u68f"), ExtResource("2_7u68f"), ExtResource("2_7u68f")])
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="CardContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
