@@ -56,21 +56,6 @@ func _ready() -> void:
 	start_scroll()
 
 
-func _process(delta: float) -> void:
-	if not scroller.is_running():
-		var min_distance := 1e12
-		var card_idx := 0
-		
-		for i in range(card_centers.size()):
-			var center := card_centers[i]
-			var cur_distance := absf(scroll_horizontal - center)
-			
-			if cur_distance < min_distance:
-				min_distance = cur_distance
-				card_idx = i
-		
-		selected_item_idx = card_idx
-
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_left"):
@@ -103,9 +88,25 @@ func restart_scroll() -> void:
 	start_scroll()
 
 
+func attach_to_nearest_card() -> void:
+	var min_distance := 1e12
+	var card_idx := 0
+	
+	for i in range(card_centers.size()):
+		var center := card_centers[i]
+		var cur_distance := absf(scroll_horizontal - center)
+		
+		if cur_distance < min_distance:
+			min_distance = cur_distance
+			card_idx = i
+	
+	selected_item_idx = card_idx
+
+
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed:
 			stop_scroll()
 		else:
+			attach_to_nearest_card()
 			start_scroll()
