@@ -3,9 +3,9 @@ class_name SwipeMenu
 
 
 @export var card_scenes: Array[PackedScene]
-@export_range(0.0, 2.0, 0.001, "or_greater") var tween_time := 0.5
+@export_range(0.0, 2.0, 0.001, "or_greater", "suffix:s") var tween_time := 0.5
 @export_range(0, 100, 1, "or_greater", "suffix:px") var separation := 20
-@export_range(0, 1, 0.001, "or_less", "or_greater") var first_offset := 0.3
+@export_range(0, 1, 0.001, "or_less", "or_greater") var hover_offset := 0.3
 @export var transition: Tween.TransitionType = Tween.TRANS_BACK
 @export var ease: Tween.EaseType = Tween.EASE_OUT
 
@@ -41,7 +41,7 @@ func _ready() -> void:
 	# Wait control nodes to setup
 	await get_tree().process_frame
 	
-	var offset := viewport_width - first_offset * viewport_width
+	var offset := viewport_width - hover_offset * viewport_width
 	for i in range(cards.size()):
 		var card := cards[i]
 		var center := offset + 0.5 * card.size.x
@@ -84,18 +84,25 @@ func stop() -> void:
 
 ## Get nearest card index based on current container state.
 func get_nearest_card() -> int:
-	var min_distance := 1e12
+	var min_offset := 1e12
 	var nearest_card := 0
 	
 	for i in range(card_centers.size()):
-		var center := card_centers[i]
-		var cur_distance := absf(scroll_horizontal - center)
+		var offset := get_card_offset(i)
 		
-		if cur_distance < min_distance:
-			min_distance = cur_distance
+		if offset < min_offset:
+			min_offset = offset
 			nearest_card = i
 	
 	return nearest_card
+
+
+## Get nearest card
+func get_card_offset(idx: int) -> float:
+		var center := card_centers[idx]
+		var offset := absf(scroll_horizontal - center)
+		return offset
+	
 
 
 func _on_gui_input(event: InputEvent) -> void:
