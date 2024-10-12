@@ -9,6 +9,7 @@ class_name SwipeMenu
 @export var transition: Tween.TransitionType = Tween.TRANS_BACK
 @export var ease: Tween.EaseType = Tween.EASE_OUT
 
+signal card_selected(card: Control, card_idx: int)
 
 @onready var center_container: CenterContainer = $CenterContainer
 @onready var card_container: HBoxContainer = $CenterContainer/MarginContainer/CardContainer
@@ -66,6 +67,7 @@ func _input(event: InputEvent) -> void:
 func jump_to(idx: int) -> void:
 	scroller.kill()
 	var scroll_target := card_centers[idx]
+	card_selected.emit(cards[idx], idx)
 	
 	scroller = get_tree().create_tween()
 	scroller\
